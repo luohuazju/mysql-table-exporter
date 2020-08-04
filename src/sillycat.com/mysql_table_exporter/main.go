@@ -6,6 +6,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
 	"sillycat.com/mysql_table_exporter/config"
+	"sillycat.com/mysql_table_exporter/database"
 )
 
 var (
@@ -45,8 +46,9 @@ func NewExporter(metricsPrefix string) *Exporter {
 func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	// --------
 	// logic
-	e.mysql_table_active.WithLabelValues("subscriptions").Set(float64(1))
-	e.mysql_table_counts.WithLabelValues("subscriptions").Set(float64(13))
+	count := database.GetTableStatus("subscriptions", 10)
+	e.mysql_table_active.WithLabelValues("subscriptions").Set(float64(count))
+	e.mysql_table_counts.WithLabelValues("subscriptions").Set(float64(10))
 
 	e.mysql_table_active.Collect(ch)
 	e.mysql_table_counts.Collect(ch)

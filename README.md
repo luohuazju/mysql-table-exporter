@@ -20,6 +20,7 @@ Run with ENV
 
 More ENV and Default Value
 
+```
 HTTP_PORT = 18081
 
 HTTP_HOST = localhost
@@ -37,3 +38,4 @@ DB_SERVER = localhost
 DB_PORT = 3306
 
 DATABASE_NAME = mysql
+```

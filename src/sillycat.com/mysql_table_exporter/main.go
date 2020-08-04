@@ -74,8 +74,9 @@ func main() {
 
 	// Register exporter to Prometheus, call Collect
 	exporter := NewExporter(metricsPrefix)
-	prometheus.MustRegister(exporter)
-	prometheus.MustRegister(version)
+	registry := prometheus.NewRegistry()
+	registry.MustRegister(exporter)
+	registry.MustRegister(version)
 
 	// Launch http service
 	http.Handle(metricsPath, promhttp.Handler())

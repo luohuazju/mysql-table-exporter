@@ -14,9 +14,9 @@ func initDatabase() *sql.DB {
 	dbUserName := config.GetEnv("DB_USERNAME", "root")
 	dbPassword := config.GetEnv("DB_PASSWORD", "password")
 	dbServer := config.GetEnv("DB_SERVER", "localhost")
-	dbServer := config.GetEnv("DB_PORT", 3306)
+	dbPort := config.GetEnv("DB_PORT", "3306")
 	databaseName := config.GetEnv("DATABASE_NAME", "mysql")
-	conn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", dbUserName, dbPassword, dbServer, dbServer, databaseName)
+	conn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", dbUserName, dbPassword, dbServer, dbPort, databaseName)
 	database, err := sql.Open("mysql", conn)
 	if err != nil {
 		fmt.Println("connection to mysql failed:", err)

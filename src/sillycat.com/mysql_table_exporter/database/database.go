@@ -14,7 +14,7 @@ func initDatabase() *sql.DB {
 	dbUserName := config.GetEnv("DB_USERNAME", "root")
 	dbPassword := config.GetEnv("DB_PASSWORD", "password")
 	dbServer := config.GetEnv("DB_SERVER", "localhost")
-	dbPort := config.GetEnv("DB_PORT", "3306")
+	dbPort := config.GetIntEnv("DB_PORT", "3306")
 	databaseName := config.GetEnv("DATABASE_NAME", "mysql")
 	conn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", dbUserName, dbPassword, dbServer, dbPort, databaseName)
 	database, err := sql.Open("mysql", conn)

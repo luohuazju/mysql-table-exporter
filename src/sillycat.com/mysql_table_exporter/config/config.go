@@ -11,3 +11,12 @@ func GetEnv(key, defaultValue string) string {
 	}
 	return value
 }
+
+func GetIntEnv(key, defaultValue string) int {
+	val := GetEnv(key, defaultValue)
+	ret, err := strconv.Atoi(val)
+	if err != nil {
+		panic(fmt.Sprintf("some error"))
+	}
+	return ret
+}

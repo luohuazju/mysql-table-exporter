@@ -1,7 +1,9 @@
 package config
 
 import (
+	"fmt"
 	"os"
+	"strconv"
 )
 
 func GetEnv(key, defaultValue string) string {

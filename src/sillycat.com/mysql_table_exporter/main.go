@@ -81,7 +81,7 @@ func main() {
 	// [...] update metrics within a goroutine
 
 	http.Handle(metricsPath, handler)
-	log.Fatal(http.ListenAndServe(listenAddress, nil))
+	http.ListenAndServe(listenAddress, nil)
 	// exporter := NewExporter(metricsPrefix)
 	// prometheus.MustRegister(exporter)
 	// prometheus.MustRegister(version)

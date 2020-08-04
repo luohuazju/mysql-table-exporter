@@ -5,6 +5,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
+	"os"
 )
 
 var (
@@ -56,16 +57,26 @@ func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 	e.mysql_table_counts.Describe(ch)
 }
 
-func main() {
-	fmt.Println(`
-        prometheus exporter mysql_table_exporter,
-        metrics expose at http://localhost:18081/mysqltable/metrics
-    `)
+func getEnv(key, defaultValue string) string {
+	value := os.Getenv(key)
+	if len(value) == 0 {
+		return defaultValue
+	}
+	return value
+}
 
+func main() {
 	// Define parameters
-	metricsPath := "/mysqltable/metrics"
-	listenAddress := "0.0.0.0:18081"
-	metricsPrefix := "mysql_table"
+	httpPort := getEnv("HTTP_PORT", "18081")
+	httpHost := getEnv("HTTP_HOST", "localhost")
+	metricsPath := getEnv("METRICS_PATH", "/mysqltable/metrics")
+	metricsPrefix := getEnv("METRICS_PREFIX", "mysql_table")
+	listenAddress := httpHost + ":" + httpPort
+
+	fmt.Printf(`
+        prometheus exporter mysql_table_exporter,
+        metrics expose at http://%s:%s%s
+    `, httpHost, httpPort, metricsPath)
 
 	// Register exporter to Prometheus, call Collect
 	exporter := NewExporter(metricsPrefix)
@@ -74,5 +85,6 @@ func main() {
 
 	// Launch http service
 	http.Handle(metricsPath, promhttp.Handler())
-	fmt.Println(http.ListenAndServe(listenAddress, nil))
+	http.ListenAndServe(listenAddress, nil)
+
 }

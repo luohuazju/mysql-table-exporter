@@ -69,8 +69,7 @@ func main() {
 
 	fmt.Printf(`
         prometheus exporter mysql_table_exporter,
-        metrics expose at http://%s:%s%s
-    `, httpHost, httpPort, metricsPath)
+        metrics expose at http://%s:%s%s`, httpHost, httpPort, metricsPath)
 
 	exporter := NewExporter(metricsPrefix)
 	registry := prometheus.NewRegistry()

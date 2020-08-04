@@ -72,13 +72,21 @@ func main() {
         metrics expose at http://%s:%s%s
     `, httpHost, httpPort, metricsPath)
 
-	// Register exporter to Prometheus, call Collect
 	exporter := NewExporter(metricsPrefix)
-	prometheus.MustRegister(exporter)
-	prometheus.MustRegister(version)
+	registry := prometheus.NewRegistry()
+	registry.MustRegister(exporter)
+	registry.MustRegister(version)
+	handler := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
 
-	// Launch http service
-	http.Handle(metricsPath, promhttp.Handler())
-	http.ListenAndServe(listenAddress, nil)
+	// [...] update metrics within a goroutine
+
+	http.Handle(metricsPath, handler)
+	log.Fatal(http.ListenAndServe(listenAddress, nil))
+	// exporter := NewExporter(metricsPrefix)
+	// prometheus.MustRegister(exporter)
+	// prometheus.MustRegister(version)
+
+	// http.Handle(metricsPath, promhttp.Handler())
+	// http.ListenAndServe(listenAddress, nil)
 
 }

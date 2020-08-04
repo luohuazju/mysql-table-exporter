@@ -5,7 +5,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
-	"os"
+	"sillycat.com/mysql_table_exporter/config"
 )
 
 var (
@@ -57,20 +57,12 @@ func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 	e.mysql_table_counts.Describe(ch)
 }
 
-func getEnv(key, defaultValue string) string {
-	value := os.Getenv(key)
-	if len(value) == 0 {
-		return defaultValue
-	}
-	return value
-}
-
 func main() {
 	// Define parameters
-	httpPort := getEnv("HTTP_PORT", "18081")
-	httpHost := getEnv("HTTP_HOST", "localhost")
-	metricsPath := getEnv("METRICS_PATH", "/mysqltable/metrics")
-	metricsPrefix := getEnv("METRICS_PREFIX", "mysql_table")
+	httpPort := config.GetEnv("HTTP_PORT", "18081")
+	httpHost := config.GetEnv("HTTP_HOST", "localhost")
+	metricsPath := config.GetEnv("METRICS_PATH", "/mysqltable/metrics")
+	metricsPrefix := config.GetEnv("METRICS_PREFIX", "mysql_table")
 	listenAddress := httpHost + ":" + httpPort
 
 	fmt.Printf(`

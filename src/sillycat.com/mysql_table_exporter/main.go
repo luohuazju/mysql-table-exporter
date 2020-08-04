@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"math/rand"
 	"net/http"
-	"time"
 )
 
 var (
@@ -20,60 +18,54 @@ var (
 )
 
 type Exporter struct {
-	gauge    prometheus.Gauge
-	gaugeVec prometheus.GaugeVec
+	mysql_table_active prometheus.GaugeVec
+	mysql_table_counts prometheus.GaugeVec
 }
 
 func NewExporter(metricsPrefix string) *Exporter {
-	gauge := prometheus.NewGauge(prometheus.GaugeOpts{
+	mysql_table_active := *prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: metricsPrefix,
-		Name:      "gauge_metric",
-		Help:      "This is a gauge metric"})
+		Name:      "mysql_table_active",
+		Help:      "This is a gauga vece metric for table status"},
+		[]string{"myLabel"})
 
-	gaugeVec := *prometheus.NewGaugeVec(prometheus.GaugeOpts{
+	mysql_table_counts := *prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: metricsPrefix,
-		Name:      "gauge_vec_metric",
-		Help:      "This is a gauga vece metric"},
+		Name:      "mysql_table_counts",
+		Help:      "This is a gauga vece metric for record count"},
 		[]string{"myLabel"})
 
 	return &Exporter{
-		gauge:    gauge,
-		gaugeVec: gaugeVec,
+		mysql_table_active: mysql_table_active,
+		mysql_table_counts: mysql_table_counts,
 	}
 }
 
 func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	// --------
-	// 业务逻辑
-	timestamp := time.Now().Unix()
-	fmt.Println("Timestamp: ", timestamp)
-	rand.Seed(timestamp)
-	ranint := rand.Intn(10000)
-	fmt.Println("Random: ", ranint)
-	e.gauge.Set(float64(timestamp))
-	e.gaugeVec.WithLabelValues("helloworld").Set(float64(ranint))
-	// --------
-	// Called use a concurrency safe way
-	e.gauge.Collect(ch)
-	e.gaugeVec.Collect(ch)
+	// logic
+	e.mysql_table_active.WithLabelValues("subscriptions").Set(float64(1))
+	e.mysql_table_counts.WithLabelValues("subscriptions").Set(float64(13))
+
+	e.mysql_table_active.Collect(ch)
+	e.mysql_table_counts.Collect(ch)
 }
 
-// metric 描述, 可被重写
 func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
-	e.gauge.Describe(ch)
-	e.gaugeVec.Describe(ch)
+	e.mysql_table_active.Describe(ch)
+	e.mysql_table_counts.Describe(ch)
 }
 
 func main() {
 	fmt.Println(`
-        prometheus exporter example,
-        metrics expose at http://:18081/metrics
+        prometheus exporter mysql_table_exporter,
+        metrics expose at http://localhost:18081/mysqltable/metrics
     `)
 
 	// Define parameters
-	metricsPath := "/metrics"
+	metricsPath := "/mysqltable/metrics"
 	listenAddress := "0.0.0.0:18081"
-	metricsPrefix := "fake"
+	metricsPrefix := "mysql_table"
 
 	// Register exporter to Prometheus, call Collect
 	exporter := NewExporter(metricsPrefix)

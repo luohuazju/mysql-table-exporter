@@ -1,3 +1,4 @@
+dist/
 src/sillycat.com/mysql_table_exporter/vendor/
 bin/
 pkg/

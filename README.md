@@ -16,7 +16,7 @@ Build on CentOS7
 
 Run with ENV
 
->DB_PASSWORD='password' HTTP_HOST=centos7-master bin/mysql_table_exporter
+>DATABASE_NAME='xxxx' DB_PASSWORD='password' HTTP_HOST=centos7-master bin/mysql_table_exporter
 
 More ENV and Default Value
 

@@ -27,16 +27,25 @@ func initDatabase() *sql.DB {
 	return database
 }
 
+func GetTableCreatedCount(tableName string, time int64) int64 {
+	var count int64
+	row := database.QueryRow(`
+		SELECT
+			count(*) as count
+		FROM
+			?
+		WHERE
+			created_at > (NOW() - INTERVAL ? MINUTE)`, tableName, time)
+	err := row.Scan(&count)
+	if err != nil {
+		fmt.Println("connection to mysql failed:", err)
+		return 0
+	}
+	fmt.Println(count)
+	return count
+}
+
 func GetTableStatus(tableName string, time int64) int64 {
-	//SELECT
-	//	table_schema,
-	//  table_name,
-	//  update_time
-	//FROM
-	//  information_schema.tables
-	//WHERE
-	//  table_name = 'subscriptions' and
-	//  update_time > (NOW() - INTERVAL 10 MINUTE);
 	var count int64
 	row := database.QueryRow(`
 		SELECT 

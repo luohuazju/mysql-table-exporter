@@ -10,6 +10,10 @@ On MAC OS, install dep if you do not have one
 
 >brew install dep
 
+Add location to the go path if needed
+
+>export GOPATH=/Users/carl/work/go/mysql-table-exporter
+
 > dep ensure -update
 
 Build on CentOS7

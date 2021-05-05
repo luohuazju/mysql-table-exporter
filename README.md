@@ -6,6 +6,10 @@ Fetch libraries
 
 > cd /home/carl/work/mysql-table-exporter/src/sillycat.com/mysql_table_exporter
 
+On MAC OS, install dep if you do not have one
+
+>brew install dep
+
 > dep ensure -update
 
 Build on CentOS7

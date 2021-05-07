@@ -14,22 +14,22 @@ var (
 		Name: "mysql_table_exporter_version",
 		Help: "Version information about this binary",
 		ConstLabels: map[string]string{
-			"version": "v1.1",
+			"version": "v1.3",
 		},
 	})
 )
 
 type Exporter struct {
-	mysql_table_active prometheus.GaugeVec
+	//mysql_table_active prometheus.GaugeVec
 	mysql_table_counts prometheus.GaugeVec
 }
 
 func NewExporter(metricsPrefix string) *Exporter {
-	mysql_table_active := *prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: metricsPrefix,
-		Name:      "mysql_table_active",
-		Help:      "This is a gauga vece metric for table status"},
-		[]string{"myLabel"})
+	// mysql_table_active := *prometheus.NewGaugeVec(prometheus.GaugeOpts{
+	// 	Namespace: metricsPrefix,
+	// 	Name:      "mysql_table_active",
+	// 	Help:      "This is a gauga vece metric for table status"},
+	// 	[]string{"myLabel"})
 
 	mysql_table_counts := *prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Namespace: metricsPrefix,
@@ -38,7 +38,7 @@ func NewExporter(metricsPrefix string) *Exporter {
 		[]string{"myLabel"})
 
 	return &Exporter{
-		mysql_table_active: mysql_table_active,
+		//mysql_table_active: mysql_table_active,
 		mysql_table_counts: mysql_table_counts,
 	}
 }
@@ -46,18 +46,18 @@ func NewExporter(metricsPrefix string) *Exporter {
 func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	// --------
 	// logic
-	subscriptions_flag := database.GetTableStatus("subscriptions", 10)
+	//subscriptions_flag := database.GetTableStatus("subscriptions", 10)
 	weekly_ads_count := database.GetTableCreatedCount("weekly_ads", 60*24)
 
-	e.mysql_table_active.WithLabelValues("subscriptions").Set(float64(subscriptions_flag))
+	//e.mysql_table_active.WithLabelValues("subscriptions").Set(float64(subscriptions_flag))
 	e.mysql_table_counts.WithLabelValues("weekly_ads").Set(float64(weekly_ads_count))
 
-	e.mysql_table_active.Collect(ch)
+	//e.mysql_table_active.Collect(ch)
 	e.mysql_table_counts.Collect(ch)
 }
 
 func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
-	e.mysql_table_active.Describe(ch)
+	//e.mysql_table_active.Describe(ch)
 	e.mysql_table_counts.Describe(ch)
 }
 

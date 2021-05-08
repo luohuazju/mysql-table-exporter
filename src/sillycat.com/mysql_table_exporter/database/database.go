@@ -35,7 +35,7 @@ func GetTableCreatedCount(tableName string, time int64) int64 {
 		FROM
 			weekly_ads
 		WHERE
-			created_at > (NOW() - INTERVAL 1440 MINUTE)`, tableName, time)
+			created_at > (NOW() - INTERVAL 1440 MINUTE)`)
 	err := row.Scan(&count)
 	if err != nil {
 		fmt.Println("connection to mysql failed:", err)

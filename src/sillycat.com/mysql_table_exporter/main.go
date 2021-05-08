@@ -14,7 +14,7 @@ var (
 		Name: "mysql_table_exporter_version",
 		Help: "Version information about this binary",
 		ConstLabels: map[string]string{
-			"version": "v1.5",
+			"version": "v1.6",
 		},
 	})
 )

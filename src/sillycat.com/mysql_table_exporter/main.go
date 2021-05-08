@@ -14,7 +14,7 @@ var (
 		Name: "mysql_table_exporter_version",
 		Help: "Version information about this binary",
 		ConstLabels: map[string]string{
-			"version": "v1.3",
+			"version": "v1.4",
 		},
 	})
 )
@@ -47,7 +47,7 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	// --------
 	// logic
 	//subscriptions_flag := database.GetTableStatus("subscriptions", 10)
-	weekly_ads_count := database.GetTableCreatedCount("weekly_ads", 60*24)
+	weekly_ads_count := database.GetTableCreatedCount("weekly_ads", 1440)
 
 	//e.mysql_table_active.WithLabelValues("subscriptions").Set(float64(subscriptions_flag))
 	e.mysql_table_counts.WithLabelValues("weekly_ads").Set(float64(weekly_ads_count))

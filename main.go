@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"mysql_table_exporter/config"
-	"mysql_table_exporter/database"
+	"mysql-table-exporter/config"
+	"mysql-table-exporter/database"
 	"net/http"
 
 	"github.com/prometheus/client_golang/prometheus"

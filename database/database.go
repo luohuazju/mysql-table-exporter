@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"mysql_table_exporter/config"
+	"mysql-table-exporter/config"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"

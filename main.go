@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"mysql_table_exporter/config"
+	"mysql_table_exporter/database"
+	"net/http"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"net/http"
-	"sillycat.com/mysql_table_exporter/config"
-	"sillycat.com/mysql_table_exporter/database"
 )
 
 var (

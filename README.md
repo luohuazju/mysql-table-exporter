@@ -1,30 +1,51 @@
 # MySQL Exporter to monitor One Table Activities
 
-# Command to Build
+Set Up go ENV
+```
+wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz
+tar zxvf go1.21.0.linux-amd64.tar.gz
+mv go ~/tool/go-1.21.0
+sudo ln -s /home/centos/tool/go-1.21.0 /opt/go-1.21.0
+sudo rm -fr /opt/go
+sudo ln -s /opt/go-1.21.0 /opt/go
 
-Fetch libraries
+. ~/.bash_profile
 
-> cd /home/carl/work/mysql-table-exporter/src/sillycat.com/mysql_table_exporter
+go version
+go version go1.21.0 linux/amd64
+```
 
-On MAC OS, install dep if you do not have one
+Build and Run
 
->brew install dep
+```
+cd ~/work/mysql-table-exporter/
 
-Add location to the go path if needed
+go get -u
+go: downloading github.com/prometheus/client_golang v1.16.0
+go: downloading github.com/go-sql-driver/mysql v1.7.1
+go: downloading github.com/prometheus/common v0.44.0
+go: downloading github.com/beorn7/perks v1.0.1
+go: downloading github.com/prometheus/client_model v0.4.0
+go: downloading github.com/cespare/xxhash/v2 v2.2.0
+go: downloading github.com/prometheus/procfs v0.11.1
+go: downloading github.com/cespare/xxhash v1.1.0
+go: downloading golang.org/x/sys v0.11.0
+go: downloading google.golang.org/protobuf v1.31.0
+go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.4
+go: downloading github.com/golang/protobuf v1.5.3
 
->export GOPATH=/Users/carl/work/go/mysql-table-exporter
+go build -o bin/mysql-table-exporter -v ./
 
-> dep ensure -update
+ENVIRONMENT=DEV go run main.go
 
-Build on CentOS7
-
-> cd /home/carl/work/mysql-table-exporter
-
-> env GOOS=linux GOARCH=amd64 go build -o bin/mysql_table_exporter -v sillycat.com/mysql_table_exporter
+ENVIRONMENT=PROD bin/mysql-table-exporter
+```
 
 Run with ENV
 
->DATABASE_NAME='xxxx' DB_PASSWORD='password' HTTP_HOST=centos7-master bin/mysql_table_exporter
+```
+DATABASE_NAME='xxxx' DB_PASSWORD='password' HTTP_HOST=centos7-master bin/mysql_table_exporter
+```
 
 More ENV and Default Value
 
@@ -46,9 +67,4 @@ DB_SERVER = localhost
 DB_PORT = 3306
 
 DATABASE_NAME = mysql
-```
-
-Load dependency
-```
-go get -u
 ```

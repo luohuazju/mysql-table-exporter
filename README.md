@@ -47,3 +47,8 @@ DB_PORT = 3306
 
 DATABASE_NAME = mysql
 ```
+
+Load dependency
+```
+go get -u
+```
